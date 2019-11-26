@@ -2,7 +2,7 @@ package handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import model.ApiError;
+import model.ApiState;
 import model.Note;
 import model.Response;
 import model.User;
@@ -22,10 +22,9 @@ public class CreateHandler extends BaseHandler {
 
         if (user != null) {
             database.createNote(user.getId(), note.getHeading(), note.getMessage());
-            Response response = new Response(note.getToken());
-            handleResult(exchange, response.toJson());
+            handleResult(exchange, new Gson().toJson(database.getNotes(user.getToken())));
         } else {
-            Response response = new Response(ApiError.ERROR_CRETE);
+            Response response = new Response(ApiState.ERROR_CRETE);
             handleResult(exchange, response.toJson());
         }
     }

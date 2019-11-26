@@ -1,7 +1,7 @@
 package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
-import model.ApiError;
+import model.ApiState;
 import model.Response;
 import model.User;
 
@@ -24,7 +24,7 @@ public class LoginHandler extends BaseHandler {
             Response response = new Response(user.getToken());
             handleResult(exchange, response.toJson());
         } else {
-            Response response = new Response(ApiError.ERROR_LOGIN);
+            Response response = new Response(ApiState.ERROR_LOGIN);
             handleResult(exchange, response.toJson());
         }
     }

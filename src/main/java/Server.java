@@ -36,6 +36,7 @@ public class Server {
     }
 
     private void attachHandlers(HttpServer server) {
+        server.createContext("/api/check", new CheckHandler());
         server.createContext("/api/login", new LoginHandler());
         server.createContext("/api/register", new RegisterHandle());
         server.createContext("/api/notes", new NoteHandler());

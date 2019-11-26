@@ -1,6 +1,8 @@
 package model;
 
-public enum ApiError {
+public enum ApiState {
+
+    OK(0, "OK"),
     ERROR_LOGIN(1, "Login unsuccessful. Try again!"),
     ERROR_REGISTER(2, "Registration unsuccessful. Try again!"),
     ERROR_DELETE(3, "Deletion unsuccessful. Try again!"),
@@ -10,7 +12,7 @@ public enum ApiError {
     int code;
     String message;
 
-    ApiError(int code, String message) {
+    ApiState(int code, String message) {
         this.code = code;
         this.message = message;
     }

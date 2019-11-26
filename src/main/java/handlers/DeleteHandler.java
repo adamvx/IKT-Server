@@ -2,7 +2,7 @@ package handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import model.ApiError;
+import model.ApiState;
 import model.Note;
 import model.Response;
 import model.User;
@@ -22,10 +22,9 @@ public class DeleteHandler extends BaseHandler {
 
         if (user != null) {
             database.deleteNote(note.getId());
-            Response response = new Response(note.getToken());
-            handleResult(exchange, response.toJson());
+            handleResult(exchange, new Gson().toJson(database.getNotes(user.getToken())));
         } else {
-            Response response = new Response(ApiError.ERROR_DELETE);
+            Response response = new Response(ApiState.ERROR_DELETE);
             handleResult(exchange, response.toJson());
         }
 
