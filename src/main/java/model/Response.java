@@ -10,9 +10,9 @@ public class Response extends BaseObject {
         this.token = token;
     }
 
-    public Response(ApiState error) {
-        this.code = error.getCode();
-        this.message = error.getMessage();
+    public Response(ApiState state) {
+        this.code = state.getCode();
+        this.message = state.getMessage();
     }
 
     public int getCode() {

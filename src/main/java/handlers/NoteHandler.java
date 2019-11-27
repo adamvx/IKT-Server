@@ -1,6 +1,5 @@
 package handlers;
 
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import model.Note;
 import model.Response;
@@ -15,8 +14,9 @@ public class NoteHandler extends BaseHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         InputStreamReader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
-        String token = new Gson().fromJson(reader, Response.class).getToken();
+        String token = gson.fromJson(reader, Response.class).getToken();
+
         List<Note> notes = database.getNotes(token);
-        handleResult(exchange, new Gson().toJson(notes));
+        handleResult(exchange, gson.toJson(notes));
     }
 }
