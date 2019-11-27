@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class Server {
-    private static final int PORT = 8080;
+    private static final int PORT = 8000;
     private static Server instance;
 
 
@@ -42,5 +42,6 @@ public class Server {
         server.createContext("/api/notes", new NoteHandler());
         server.createContext("/api/create", new CreateHandler());
         server.createContext("/api/delete", new DeleteHandler());
+        server.createContext("/api/edit", new EditHandler());
     }
 }

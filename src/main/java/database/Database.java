@@ -77,6 +77,18 @@ public class Database {
         }
     }
 
+    public void updateNote(int noteId, String title, String message) {
+        try {
+            System.out.println("Creating statement...");
+            stmt = conn.createStatement();
+            String query = "UPDATE notes SET title = '%s', note = '%s' WHERE id = %s";
+            String sql = String.format(query, title, message, noteId);
+            stmt.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteNote(int noteId) {
         try {
             System.out.println("Creating statement...");
