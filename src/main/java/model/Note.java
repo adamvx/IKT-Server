@@ -3,6 +3,9 @@ package model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Model of note object
+ */
 public class Note extends BaseObject {
     private int id;
     private int userId;

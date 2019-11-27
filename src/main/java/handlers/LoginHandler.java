@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Handler for user login.
+ */
 public class LoginHandler extends BaseHandler {
 
     @Override

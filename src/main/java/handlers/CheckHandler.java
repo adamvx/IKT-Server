@@ -6,6 +6,10 @@ import model.Response;
 
 import java.io.IOException;
 
+/**
+ * Handler for checking status of server.
+ */
+
 public class CheckHandler extends BaseHandler {
 
     @Override

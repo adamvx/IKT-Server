@@ -5,28 +5,69 @@ import model.Note;
 import model.User;
 import utils.Utils;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Database class is responsible for connecting and handling database requests.
+ *
+ * @author Adam Vician, Milan Ponist, Matej Vanek
+ */
 public class Database {
 
+    /**
+     * JDBC Driver constant
+     */
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    /**
+     * Database url
+     */
     private static final String DB_URL = "jdbc:mysql://localhost:3306/ikt?characterEncoding=utf8&useConfigs=maxPerformance";
 
+    /**
+     * Database username
+     */
     private static final String USER = "ikt";
+    /**
+     * Database password
+     */
     private static final String PASS = "Qwerqwer1234";
 
+    /**
+     * Database singleton instance
+     */
     private static Database instance;
+
+    /**
+     * Database connection reference
+     */
     private Connection conn = null;
+
+    /**
+     * Database global statement
+     */
     private Statement stmt = null;
 
+    /**
+     * Private constructor. When new Database instance is created it will also execute start method that will create
+     * connection to database.
+     * @see Database#start()
+     */
     private Database() {
         start();
     }
 
+
+    /**
+     * Getter for singleton instance of database. If no instance is present new is created.
+     * @return Database instance
+     */
     public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
@@ -34,6 +75,9 @@ public class Database {
         return instance;
     }
 
+    /**
+     * Start will make connection to database with provided URL and login credentials
+     */
     private void start() {
 
         try {
@@ -48,6 +92,14 @@ public class Database {
         }
     }
 
+    /**
+     * Tries to login user.
+     * @param email
+     * @param password
+     * @return returns updated user from databased or null if user with provided credentials doesn't exist
+     * @see Database#updateUser(int)
+     * @see Database#getUser(int)
+     */
     @Nullable
     public User login(String email, String password) {
         try {
@@ -65,6 +117,12 @@ public class Database {
         return null;
     }
 
+    /**
+     * Will create new note in database for user
+     * @param userId user id for user who is creating the note
+     * @param title title of note
+     * @param message message of note
+     */
     public void createNote(int userId, String title, String message) {
         try {
             System.out.println("Creating statement...");
@@ -77,6 +135,12 @@ public class Database {
         }
     }
 
+    /**
+     * Will update note in database
+     * @param noteId note id which will be edited
+     * @param title updated title
+     * @param message updated message
+     */
     public void updateNote(int noteId, String title, String message) {
         try {
             System.out.println("Creating statement...");
@@ -89,6 +153,10 @@ public class Database {
         }
     }
 
+    /**
+     * Will delete note from database by id
+     * @param noteId note id which will be deleted
+     */
     public void deleteNote(int noteId) {
         try {
             System.out.println("Creating statement...");
@@ -101,15 +169,20 @@ public class Database {
         }
     }
 
+    /**
+     * Will update user last login date
+     * @param id id of user
+     * @return returns user by id from database of null if user is not found.
+     * @see Database#getUser(int)
+     */
     @Nullable
     public User updateUser(int id) {
         try {
             String date = Utils.databaseDate(new Date());
-            String token = UUID.randomUUID().toString();
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
-            String query = "UPDATE users SET last_login = '%s', token = '%s' where id = '%s'";
-            String sql = String.format(query, date, token, id);
+            String query = "UPDATE users SET last_login = '%s' where id = '%s'";
+            String sql = String.format(query, date, id);
             stmt.executeUpdate(sql);
             return getUser(id);
         } catch (Exception e) {
@@ -118,6 +191,13 @@ public class Database {
         return null;
     }
 
+    /**
+     * Will create new user in database with token
+     * @param email User email
+     * @param password User password
+     * @return returns user by token from database of null if user is not found.
+     * @see Database#getUser(String)
+     */
     @Nullable
     public User createUser(String email, String password) {
         try {
@@ -135,6 +215,11 @@ public class Database {
         return null;
     }
 
+    /**
+     * Will return user from database by provided id
+     * @param id id of user
+     * @return returns user by id from database of null if user is not found.
+     */
     @Nullable
     public User getUser(int id) {
         try {
@@ -153,6 +238,11 @@ public class Database {
         return null;
     }
 
+    /**
+     * Will return user from database by provided token
+     * @param token token of user
+     * @return returns user by token from database of null if user is not found.
+     */
     @Nullable
     public User getUser(String token) {
         try {
@@ -171,6 +261,11 @@ public class Database {
         return null;
     }
 
+    /**
+     * Returns list of notes for provided user by token
+     * @param token user token
+     * @return returns not null list of notes which belong to user.
+     */
     public List<Note> getNotes(String token) {
         List<Note> notes = new ArrayList<>();
         try {
@@ -192,26 +287,4 @@ public class Database {
         return notes;
     }
 
-
-    public void close() {
-        try {
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null)
-                    stmt.close();
-            } catch (SQLException se2) {
-                se2.printStackTrace();
-            }
-            try {
-                if (conn != null)
-                    conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-        }
-    }
 }

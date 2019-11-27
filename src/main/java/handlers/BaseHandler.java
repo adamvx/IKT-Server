@@ -8,6 +8,9 @@ import database.Database;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Base handler is parent of all handlers. It has defined useful global variables with handle result function.
+ */
 public abstract class BaseHandler implements HttpHandler {
 
     private static final int SUCCESS = 200;

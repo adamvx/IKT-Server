@@ -4,6 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+/**
+ * Model of user object
+ */
 public class User extends BaseObject {
     private int id;
     private String email;

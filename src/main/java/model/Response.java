@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Model of server response object
+ */
 public class Response extends BaseObject {
 
     private Integer code;

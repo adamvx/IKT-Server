@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Handler for user registration.
+ */
 public class RegisterHandle extends BaseHandler {
 
     @Override

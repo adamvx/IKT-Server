@@ -7,6 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Utils. Mainly for date conversion.
+ */
 public class Utils {
 
     @NotNull

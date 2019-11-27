@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Handler for deleting notes.
+ */
 public class DeleteHandler extends BaseHandler {
 
     @Override
