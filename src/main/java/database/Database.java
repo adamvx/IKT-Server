@@ -1,5 +1,6 @@
 package database;
 
+import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import model.Note;
 import model.User;
@@ -86,6 +87,8 @@ public class Database {
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connected!");
+            tryToCreateTables();
+            System.out.println("Ready!");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,9 +96,28 @@ public class Database {
     }
 
     /**
+     * Tries to create tables for users and notes if they doesn't exists/
+     */
+    private void tryToCreateTables() {
+        try {
+            stmt = conn.createStatement();
+            String notes = "CREATE TABLE IF NOT EXISTS ikt.notes ( id int(10) unsigned NOT NULL AUTO_INCREMENT, user_id int(11) NOT NULL, title varchar(128) COLLATE ascii_bin DEFAULT NULL, note varchar(128) COLLATE ascii_bin DEFAULT NULL, PRIMARY KEY (id), UNIQUE KEY id_UNIQUE (id) )";
+            String users = "CREATE TABLE IF NOT EXISTS ikt.users ( id int(11) NOT NULL AUTO_INCREMENT, email varchar(128) COLLATE ascii_bin NOT NULL, password varchar(128) COLLATE ascii_bin NOT NULL, last_login datetime DEFAULT NULL, token varchar(36) COLLATE ascii_bin DEFAULT NULL, PRIMARY KEY (id), UNIQUE KEY id_UNIQUE (id), UNIQUE KEY email_UNIQUE (email), UNIQUE KEY token_UNIQUE (token) )";
+            stmt.executeUpdate(notes);
+            stmt.executeUpdate(users);
+
+            System.out.println("Databases created!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
      * Tries to login user.
-     * @param email
-     * @param password
+     * @param email users email
+     * @param password users password
      * @return returns updated user from databased or null if user with provided credentials doesn't exist
      * @see Database#updateUser(int)
      * @see Database#getUser(int)
@@ -266,6 +288,7 @@ public class Database {
      * @param token user token
      * @return returns not null list of notes which belong to user.
      */
+    @NotNull
     public List<Note> getNotes(String token) {
         List<Note> notes = new ArrayList<>();
         try {

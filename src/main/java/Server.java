@@ -54,7 +54,7 @@ public class Server {
 
     /**
      * Method that will start HttpServer on provided port with different handlers.
-     * @throws IOException Exeption is thrown if there was problem with starting server. For example another process
+     * @throws IOException Exception is thrown if there was problem with starting server. For example another process
      * is using this port.
      */
     public void start() throws IOException {
